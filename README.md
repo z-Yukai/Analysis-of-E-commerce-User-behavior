@@ -122,6 +122,8 @@
 .
 ├── README.md
 ├── requirements.txt
+├── download_data.sh
+├── data_sample/sample_events.csv
 ├── 电商用户行为分析.ipynb   # 全部分析（含图表输出）
 └── figs/                    # 导出的图表
 ```
@@ -129,12 +131,19 @@
 ## 🚀 如何运行
 
 ```bash
+git clone https://github.com/z-Yukai/Analysis-of-E-commerce-User-Behavior.git
+cd Analysis-of-E-commerce-User-Behavior
 pip install -r requirements.txt
-# 从 Kaggle 下载数据集，把 events.csv 放到 data/ 目录
+bash download_data.sh          # 自动下载并解压 events.csv 到 data/
 jupyter notebook 电商用户行为分析.ipynb
 ```
 
-notebook 内读取路径为 `data/events.csv`，无需修改。
+说明：
+
+- 数据文件（90MB）不纳入仓库，用脚本按需下载
+- 仓库内附 `data_sample/sample_events.csv`（5 万行随机抽样，1.6MB）用于快速跑通流程；
+  若没有全量 `data/events.csv`，notebook 会自动回退到样本并在开头提示
+- 手动下载：https://www.kaggle.com/datasets/retailrocket/ecommerce-dataset → 解压 `events.csv` 放到 `data/`
 
 ---
 
