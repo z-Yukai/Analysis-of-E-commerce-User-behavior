@@ -16,7 +16,11 @@ curl -L --fail --progress-bar \
   "https://www.kaggle.com/api/v1/datasets/download/retailrocket/ecommerce-dataset"
 
 echo "📦 解压 events.csv ..."
-unzip -o data/retailrocket.zip events.csv -d data
+if command -v unzip >/dev/null 2>&1; then
+  unzip -o -q data/retailrocket.zip events.csv -d data
+else
+  python3 -c "import zipfile; zipfile.ZipFile('data/retailrocket.zip').extract('events.csv', 'data')"
+fi
 rm -f data/retailrocket.zip
 
 echo "✅ 完成：$(wc -l < data/events.csv) 行"
