@@ -1,77 +1,70 @@
-📊 E-commerce User Behavior Analysis
+# 📊 电商用户行为分析 · E-commerce User Behavior Analysis
 
-📌 Project Overview
+基于真实电商埋点数据，做**转化漏斗**与 **RFM 用户分层**，并用 K-Means 交叉验证分层结果。
 
-This project analyzes user behavior data from an e-commerce platform to understand conversion patterns and user value.
-
-- Dataset size: 2.7M+ records
-- User count: 1.4M+
-- Events: view, add-to-cart, purchase
+- 数据规模：2,664,218 条行为记录，约 143 万访客
+- 事件类型：`view`（浏览）、`cart`（加购）、`transaction`（成交）
+- 工具：Python · pandas · matplotlib · scikit-learn · Jupyter
 
 ---
 
-🎯 Objectives
+## 🔍 一、转化漏斗
 
-- Analyze user conversion funnel
-- Identify high-value users
-- Understand user behavior patterns
+| 环节 | 事件数 | 环节转化率 |
+|---|---|---|
+| 浏览 view | 2,664,218 | — |
+| 加购 cart | 68,966 | 2.59% |
+| 成交 transaction | 22,457 | 32.56% |
 
----
+**整体浏览→成交转化率 0.84%。**
 
-🔍 Key Analysis
-
-1. Conversion Funnel
-
-- View → Add to Cart → Purchase
-- Conversion rates calculated for each stage
-
-📈 Insight:
-
-- Significant drop between "view" and "add-to-cart"
+结论：**瓶颈在「浏览 → 加购」**（仅 2.59%），而不是「加购 → 成交」（32.56%，属于正常水平）。
+优化重点应放在商品详情页的说服力和推荐精准度上，而不是支付环节。
 
 ---
 
-2. RFM Analysis
+## 👥 二、RFM 用户分层
 
-- Recency, Frequency metrics
-- User segmentation using clustering
+以成交用户为对象：
 
-📊 User Groups:
+- **R（Recency）**：最近一次成交距今天数，四分位打分 4→1
+- **F（Frequency）**：成交次数，四分位打分 1→4
+- 按 R、F 得分划分四类用户：高价值 / 潜力 / 流失预警 / 流失
 
-- High-value users
-- Potential users
-- Churned users
+再用 **K-Means（k=4，标准化后聚类）** 对 R、F 二维特征聚类，与规则分层互相印证。
 
----
+结论：
 
-3. Clustering
-
-- K-Means clustering applied
-- Identified behavior-based user segments
+- 绝大多数用户只浏览、不加购，流量利用率低
+- 极少数用户贡献了大部分成交，呈现明显的长尾结构
+- 高频用户的 Recency 显著更低，说明复购用户粘性强
 
 ---
 
-🛠 Tools & Technologies
+## 📁 目录结构
 
-- Python (pandas, numpy)
-- Data Visualization (matplotlib)
-- Jupyter Notebook
-
----
-
-📈 Key Findings
-
-- Most users browse but do not add to cart
-- A small group contributes majority of purchases
-- High-frequency users have significantly lower recency
+```
+.
+├── README.md
+└── 电商用户行为分析.ipynb   # 漏斗分析 + RFM + K-Means
+```
 
 ---
 
-🚀 Future Work
+## 🚀 如何运行
 
-- Add recommendation system
-- Build predictive model for user conversion
+1. 从 Kaggle 下载 *eCommerce behavior data* 数据集（`events.csv`）
+2. 放到本地任意目录，修改 notebook 中读取数据的路径：
+   ```python
+   df = pd.read_csv('data/events.csv')
+   ```
+3. 依赖：`pandas`、`numpy`、`matplotlib`、`scikit-learn`
+4. 从上到下依次运行即可
 
 ---
 
-⭐ If you like this project, feel free to star!
+## 📈 后续计划
+
+- [ ] 加入时间维度的趋势分析（DAU、转化率变化）
+- [ ] 用逻辑回归 / 树模型预测「会不会加购」
+- [ ] 针对高价值用户给出运营策略建议
